@@ -9,6 +9,7 @@ stages:
   jobs:
   - job: FirstStageJob
     steps:
+    - checkout: none
     - script: echo Hello, world!
       displayName: 'Run a one-line script'
 
@@ -17,5 +18,6 @@ stages:
   jobs:
   - job: SecondPipelineJob
     steps:
+    - checkout: none
     - script: echo "Trigger Third Pipeline"
       displayName: 'Trigger Thrid Pipeline'
