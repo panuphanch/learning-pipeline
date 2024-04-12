@@ -1,0 +1,24 @@
+trigger: none
+
+resources:
+  pipelines:
+    - pipeline: firstPipeline
+      source: 'first-pipeline'
+      project: DevOpsTraining
+      trigger: 
+        stages:
+        - FirstPipelineStage
+    - pipeline: secondPipeline
+      source: 'second-pipeline'
+      project: DevOpsTraining
+      trigger: 
+        stages:
+        - SecondPipelineStage
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: |
+    echo Build Reason is $(Build.Reason)
+    echo The pipeline was triggered by $(resources.triggeringAlias)
