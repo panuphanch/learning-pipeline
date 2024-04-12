@@ -19,6 +19,8 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- checkout: none
 - script: |
     echo Build Reason is $(Build.Reason)
+- script: |
     echo The pipeline was triggered by $(resources.triggeringAlias)
