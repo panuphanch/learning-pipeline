@@ -23,8 +23,12 @@ steps:
 - ${{ if eq(variables['Build.Reason'], 'ResourceTrigger')}}:
   - script: echo The pipeline was triggered by $(resources.triggeringAlias)
   - ${{ if eq(variables['resources.triggeringAlias'], 'firstPipeline') }}:
-    - script: echo "First Pipeline triggered this run."
+    - script: echo "First Pipeline triggered this run with conditional insertion."
   - ${{ if eq(variables['resources.triggeringAlias'], 'secondPipeline') }}:
-    - script: echo "Second Pipeline triggered this run."
+    - script: echo "Second Pipeline triggered this run with conditional insertion."
+  - script: echo "First Pipeline triggered this run with condition."
+    condition: and(succeeded(), eq(variables['resources.triggeringAlias'], 'firstPipeline'))
+  - script: echo "Second Pipeline triggered this run with condition."
+    condition: and(succeeded(), eq(variables['resources.triggeringAlias'], 'secondPipeline'))
 - ${{ else }}:
   - script: echo Not trigger by `ResourceTrigger`
