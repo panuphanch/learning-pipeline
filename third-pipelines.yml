@@ -21,14 +21,13 @@ pool:
 steps:
 - checkout: none
 - ${{ if eq(variables['Build.Reason'], 'ResourceTrigger')}}:
-  - script: echo The pipeline was triggered by $(resources.triggeringAlias)
-  - ${{ if eq(variables['resources.triggeringAlias'], 'firstPipeline') }}:
-    - script: echo "First Pipeline triggered this run with conditional insertion."
-  - ${{ if eq(variables['resources.triggeringAlias'], 'secondPipeline') }}:
-    - script: echo "Second Pipeline triggered this run with conditional insertion."
-  - script: echo "First Pipeline triggered this run with condition."
+  - script: echo "resources.triggeringAlias is firstPipeline"
     condition: and(succeeded(), eq(variables['resources.triggeringAlias'], 'firstPipeline'))
-  - script: echo "Second Pipeline triggered this run with condition."
+  - script: echo "resources.triggeringAlias is secondPipeline"
     condition: and(succeeded(), eq(variables['resources.triggeringAlias'], 'secondPipeline'))
+  - script: echo "resources.pipeline.firstPipeline.triggered is true"
+    condition: and(succeeded(), , eq(variables['resources.pipeline.firstPipeline.triggered'], 'true'))
+  - script: echo "resources.pipeline.secondPipeline.triggered is true"
+    condition: and(succeeded(), , eq(variables['resources.pipeline.secondPipeline.triggered'], 'true'))
 - ${{ else }}:
   - script: echo Not trigger by `ResourceTrigger`
