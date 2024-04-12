@@ -20,7 +20,11 @@ pool:
 
 steps:
 - checkout: none
-- script: |
-    echo Build Reason is $(Build.Reason)
-- script: |
-    echo The pipeline was triggered by $(resources.triggeringAlias)
+- ${{ if eq(variables['Build.Reason'], 'ResourceTrigger')}}:
+  - script: echo The pipeline was triggered by $(resources.triggeringAlias)
+  - ${{ if eq(variables['resources.triggeringAlias'], 'firstPipeline') }}:
+    - script: echo "First Pipeline triggered this run."
+  - ${{ if eq(variables['resources.triggeringAlias'], 'secondPipeline') }}:
+    - script: echo "Second Pipeline triggered this run."
+- ${{ else }}:
+  - script: echo Not trigger by `ResourceTrigger`
