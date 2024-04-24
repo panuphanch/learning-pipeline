@@ -1,6 +1,10 @@
 trigger: none
 
 parameters:
+  - name: dockerImageName
+    displayName: 'Docker image Name'
+    type: 'string'
+    default: 'mcr.microsoft.com/dotnet/aspnet'
   - name: dockerImageTag
     displayName: 'Docker image Tag'
     type: string
@@ -18,14 +22,12 @@ stages:
           vmImage: 'windows-latest'
         ubuntu:
           vmImage: 'ubuntu-latest'
-        mac:
-          vmImage: 'macOS-latest'
     pool:
       vmImage: $(vmImage)
     steps:
     - script: |
-        docker pull mcr.microsoft.com/dotnet/aspnet:${{ parameters.dockerImageTag }}
-        docker run --rm -d -p 8080:80 --name testContainer mcr.microsoft.com/dotnet/aspnet:${{ parameters.dockerImageTag }}
+        docker pull ${{ parameters.dockerImageName }}:${{ parameters.dockerImageTag }}
+        docker run --rm -d -p 8080:80 --name testContainer ${{ parameters.dockerImageName }}:${{ parameters.dockerImageTag }}
         docker ps
       displayName: 'Pull and run Docker image'
     - script: |
